@@ -1,5 +1,5 @@
 //  Read in the eartquake data
-let scale = 10000
+let scale = 2
 let url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson"
 d3.json(url).then(function (data) {
 
@@ -46,14 +46,21 @@ d3.json(url).then(function (data) {
     }
 
 
+    function calculateRadius(magnitude){
+      let radius = scale * magnitude;
+      console.log(magnitude, radius);
+      return radius;
+    }
+
+
     // Add circles to the map.
-    L.circle(coord, {
+    L.circleMarker(coord, {
       opacity: 1,
       fillOpacity: 1,
       color: "black",
       fillColor: calculateColor(altitude),
       // Adjust the radius.
-      radius: scale * magnitude,
+      radius: calculateRadius(magnitude),
       stroke: true,
       weight:0.5
     }).bindPopup("<b>Location: </b>" + location + "<br/><b>Magnitude:</b> " + magnitude).addTo(myMap);
@@ -70,7 +77,7 @@ d3.json(url).then(function (data) {
    let colors = ["#9eea33","#daed39", "#f6db38", "#fdb733","#f9a25d","#f25c64"];
   
    for (let i = 0; i < grades.length; i++) {
-    div.innerHTML += "<i style='background: " + colors[i] + "'></i> " + grades[i] + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
+    div.innerHTML += "<i style='background: " + colors[i] + "'>&emsp;&emsp;</i> " + grades[i] + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
   }
   return div;
 };
